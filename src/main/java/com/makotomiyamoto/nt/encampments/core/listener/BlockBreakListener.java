@@ -1,5 +1,6 @@
 package com.makotomiyamoto.nt.encampments.core.listener;
 
+import com.destroystokyo.paper.event.block.BlockDestroyEvent;
 import com.makotomiyamoto.nt.encampments.Encampments;
 import com.makotomiyamoto.nt.encampments.NTEGlobals;
 import com.makotomiyamoto.nt.encampments.core.ChangedBlock;

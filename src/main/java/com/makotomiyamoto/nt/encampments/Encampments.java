@@ -1,8 +1,10 @@
 package com.makotomiyamoto.nt.encampments;
 
 import com.makotomiyamoto.nt.encampments.core.SerializableBlock;
+import com.makotomiyamoto.nt.encampments.core.command.AdminToggle;
 import com.makotomiyamoto.nt.encampments.core.command.DumpBlockCache;
 import com.makotomiyamoto.nt.encampments.core.listener.BlockBreakListener;
+import com.makotomiyamoto.nt.encampments.core.listener.PlayerQuitListener;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,7 +19,9 @@ public final class Encampments extends JavaPlugin {
         // Plugin startup logic
         instance = this;
         this.getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
         Objects.requireNonNull(this.getCommand("dump")).setExecutor(new DumpBlockCache());
+        Objects.requireNonNull(this.getCommand("admintoggle")).setExecutor(new AdminToggle());
 
         Bukkit.getScheduler().runTaskTimer(this, () -> NTEGlobals.getChunks().entrySet().removeIf(chunkNTEChunkEntry -> {
            chunkNTEChunkEntry.getValue().getChangedBlocks().removeIf(changedBlock -> {

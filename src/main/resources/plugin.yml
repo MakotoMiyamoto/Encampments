@@ -2,7 +2,7 @@ name: Encampments
 version: '${version}'
 main: com.makotomiyamoto.nt.encampments.Encampments
 api-version: 1.18
-prefix: NTCamp
+prefix: NTE
 authors: [ MakotoMiyamoto ]
 description: Camping and crafting system for the Misteria RPG server.
 website: https://makotomiyamoto.com
@@ -12,6 +12,8 @@ commands:
     permission: nt.admin
     permission-message: This is an admin command you pepperoni.
   admintoggle:
+    aliases:
+      - at
     description: Toggles admin mode for a player.
     permission: nt.admin
     permission-message: This is an admin command you pepperoni.

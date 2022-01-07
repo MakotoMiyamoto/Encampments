@@ -14,11 +14,11 @@ public class AdminToggle implements CommandExecutor {
         if (sender instanceof Player) {
             OfflinePlayer player = (OfflinePlayer) sender;
             if (NTEGlobals.getAdminPlayers().contains(player)) {
-                NTEGlobals.getAdminPlayers().add(player);
-                sender.sendMessage(ChatColor.GREEN + "You are now in admin mode.");
-            } else {
                 NTEGlobals.getAdminPlayers().remove(player);
                 sender.sendMessage(ChatColor.YELLOW + "You are no longer in admin mode.");
+            } else {
+                NTEGlobals.getAdminPlayers().add(player);
+                sender.sendMessage(ChatColor.GREEN + "You are now in admin mode.");
             }
         } else {
             sender.sendMessage("Only players can execute this command.");
