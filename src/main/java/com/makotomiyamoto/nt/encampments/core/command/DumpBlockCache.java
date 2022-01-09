@@ -33,17 +33,17 @@ public class DumpBlockCache implements CommandExecutor {
                 location.getBlockX(), location.getBlockY(), location.getBlockZ()
                 )));
 
-        NTEGlobals.Debug.getArchivedChangedBlocks().forEach(changedBlock -> {
-            SerializableBlock block = changedBlock.getSerializableBlock();
-            Location location = block.getLocation();
-            Encampments.getInstance().getLogger().log(Level.INFO,
-                    String.format("Block of type (%s) at {x: %d, y: %d, z: %d} archived.",
-                            block.getType(),
-                            location.getBlockX(),
-                            location.getBlockY(),
-                            location.getBlockZ())
-            );
-        });
+//        NTEGlobals.Debug.getArchivedChangedBlocks().forEach(changedBlock -> {
+//            SerializableBlock block = changedBlock.getSerializableBlock();
+//            Location location = block.getLocation();
+//            Encampments.getInstance().getLogger().log(Level.INFO,
+//                    String.format("Block of type (%s) at {x: %d, y: %d, z: %d} archived.",
+//                            block.getType(),
+//                            location.getBlockX(),
+//                            location.getBlockY(),
+//                            location.getBlockZ())
+//            );
+//        });
 
         sender.sendMessage("Cache dump written to console.");
         return true;
