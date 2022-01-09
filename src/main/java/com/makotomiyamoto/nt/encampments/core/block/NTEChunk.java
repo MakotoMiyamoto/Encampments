@@ -1,9 +1,7 @@
-package com.makotomiyamoto.nt.encampments.core;
+package com.makotomiyamoto.nt.encampments.core.block;
 
 import org.bukkit.Chunk;
-import org.bukkit.World;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 // I don't know what to name this class yet.
@@ -13,7 +11,6 @@ public class NTEChunk {
 
     public NTEChunk(Chunk chunk) {
         this.chunk = chunk;
-
     }
 
     public Chunk getChunk() {

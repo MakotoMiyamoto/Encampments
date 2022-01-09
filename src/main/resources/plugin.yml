@@ -17,3 +17,7 @@ commands:
     description: Toggles admin mode for a player.
     permission: nt.admin
     permission-message: This is an admin command you pepperoni.
+  regen:
+    description: Restores blocks stored in cache.
+    permission: nt.admin
+    permission-message: This is an admin command you pepperoni.
