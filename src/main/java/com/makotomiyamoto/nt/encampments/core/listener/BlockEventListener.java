@@ -16,6 +16,7 @@ import org.bukkit.block.data.type.Door;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 
 import java.util.Objects;
 import java.util.logging.Level;
@@ -34,7 +35,7 @@ public class BlockEventListener implements Listener {
                 }
             }
             var location = event.getBlock().getLocation();
-            if (event.getBlock().getBlockData() instanceof Door door && door.getHalf().equals(Bisected.Half.TOP)) {
+            if (event.getBlock().getBlockData() instanceof Bisected door && door.getHalf().equals(Bisected.Half.TOP)) {
                 location.subtract(0, 1, 0);
             }
             NTEGlobals.Admin.tempSaveAdminBlockToCache(location);
@@ -59,5 +60,21 @@ public class BlockEventListener implements Listener {
     @EventHandler
     public void onBlockND(BlockBreakByNDEvent event) {
         NTEUtils.setBlockToRestoreCache(event);
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+//        if (NTEGlobals.playerIsAdminMode(event.getPlayer())) {
+//            return;
+//        }
+//
+//        var block = event.getBlockPlaced();
+//        var chunk = block.getChunk();
+//        var location = block.getLocation();
+//        if (NTEGlobals.getChunks().get(chunk).getChangedBlocks().containsKey(location)) {
+//            return; // ignore blocks already cached
+//        }
+//
+
     }
 }

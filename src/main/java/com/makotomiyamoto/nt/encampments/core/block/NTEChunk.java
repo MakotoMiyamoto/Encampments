@@ -1,13 +1,15 @@
 package com.makotomiyamoto.nt.encampments.core.block;
 
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 // I don't know what to name this class yet.
 public class NTEChunk {
     private final Chunk chunk;
-    private final ArrayList<ChangedBlock> changedBlocks = new ArrayList<>();
+    private final HashMap<Location, ChangedBlock> changedBlocks = new HashMap<>();
 
     public NTEChunk(Chunk chunk) {
         this.chunk = chunk;
@@ -17,7 +19,7 @@ public class NTEChunk {
         return chunk;
     }
 
-    public ArrayList<ChangedBlock> getChangedBlocks() {
+    public HashMap<Location, ChangedBlock> getChangedBlocks() {
         return changedBlocks;
     }
 }

@@ -16,7 +16,7 @@ public class DumpBlockCache implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         Encampments.getInstance().getLogger().log(Level.INFO, "Dumping NTE cache...");
 
-        NTEGlobals.getChunks().forEach((chunk, nteChunk) -> nteChunk.getChangedBlocks().forEach(changedBlock -> {
+        NTEGlobals.getChunks().forEach((chunk, nteChunk) -> nteChunk.getChangedBlocks().values().forEach(changedBlock -> {
             SerializableBlock block = changedBlock.getSerializableBlock();
             Encampments.getInstance().getLogger().log(Level.INFO,
                     String.format("Block of type(%s) at {x: %d, y: %d, z: %d} at %s",
@@ -32,18 +32,6 @@ public class DumpBlockCache implements CommandExecutor {
                 "Block broken at {x: %d, y: %d, z: %d} by an admin and will not be restored.",
                 location.getBlockX(), location.getBlockY(), location.getBlockZ()
                 )));
-
-//        NTEGlobals.Debug.getArchivedChangedBlocks().forEach(changedBlock -> {
-//            SerializableBlock block = changedBlock.getSerializableBlock();
-//            Location location = block.getLocation();
-//            Encampments.getInstance().getLogger().log(Level.INFO,
-//                    String.format("Block of type (%s) at {x: %d, y: %d, z: %d} archived.",
-//                            block.getType(),
-//                            location.getBlockX(),
-//                            location.getBlockY(),
-//                            location.getBlockZ())
-//            );
-//        });
 
         sender.sendMessage("Cache dump written to console.");
         return true;

@@ -17,7 +17,8 @@ public abstract class NTEUtils {
             NTEGlobals.getChunks().put(block.getChunk(), new NTEChunk(block.getChunk()));
         }
         NTEChunk chunk = NTEGlobals.getChunks().get(block.getChunk());
-        chunk.getChangedBlocks().add(new ChangedBlock(new Date(), blockEvent));
+        var changedBlock = new ChangedBlock(new Date(), blockEvent);
+        chunk.getChangedBlocks().put(changedBlock.getSerializableBlock().getLocation(), changedBlock);
     }
 
     public static void restoreBlocks() {
@@ -25,9 +26,9 @@ public abstract class NTEUtils {
         long duration = NTEGlobals.Options.REGEN_TIME_SECONDS * 1000;
         for (var set : NTEGlobals.getChunks().entrySet()) {
             Bukkit.getScheduler().runTaskLater(Encampments.getInstance(), () -> {
-                for (var it = set.getValue().getChangedBlocks().iterator(); it.hasNext();) {
+                for (var it = set.getValue().getChangedBlocks().values().iterator(); it.hasNext();) {
                     var changedBlock = it.next();
-                    if (changedBlock.getDate().getTime() + (duration) < System.currentTimeMillis()) {
+                    if (changedBlock.getDate().getTime() + duration < System.currentTimeMillis()) {
                         var serializableBlock = changedBlock.getSerializableBlock();
                         serializableBlock.place();
                         it.remove();
