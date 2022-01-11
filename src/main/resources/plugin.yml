@@ -21,3 +21,9 @@ commands:
     description: Restores blocks stored in cache.
     permission: nt.admin
     permission-message: This is an admin command you pepperoni.
+  naturallydestroy:
+    aliases:
+      - nd
+    description: Destroy blocks beautifuly so they are loaded to the regen cache.
+    permission: nt.admin
+    permission-message: This is an admin command you pepperoni.

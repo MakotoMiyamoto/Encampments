@@ -1,0 +1,4 @@
+options:
+  regeneration:
+    auto_regen: false
+    regen_time_seconds: 3

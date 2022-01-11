@@ -13,7 +13,7 @@ public class AdminToggle implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
-            OfflinePlayer player = (OfflinePlayer) sender;
+            Player player = (Player) sender;
             if (NTEGlobals.getAdminPlayers().contains(player)) {
                 NTEGlobals.getAdminPlayers().remove(player);
                 sender.sendMessage(ChatColor.YELLOW + "You are no longer in admin mode.");

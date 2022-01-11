@@ -21,15 +21,20 @@ public abstract class NTEUtils {
     }
 
     public static void restoreBlocks() {
+        int iterations = 1;
+        long duration = NTEGlobals.Options.REGEN_TIME_SECONDS * 1000;
         for (var set : NTEGlobals.getChunks().entrySet()) {
-            for (var it = set.getValue().getChangedBlocks().iterator(); it.hasNext();) {
-                var changedBlock = it.next();
-                if (changedBlock.getDate().getTime() + (NTEGlobals.BLOCK_CHANGED_DURATION_SECONDS * 1000) < System.currentTimeMillis()) {
-                    var serializableBlock = changedBlock.getSerializableBlock();
-                    serializableBlock.place();
-                    it.remove();
+            Bukkit.getScheduler().runTaskLater(Encampments.getInstance(), () -> {
+                for (var it = set.getValue().getChangedBlocks().iterator(); it.hasNext();) {
+                    var changedBlock = it.next();
+                    if (changedBlock.getDate().getTime() + (duration) < System.currentTimeMillis()) {
+                        var serializableBlock = changedBlock.getSerializableBlock();
+                        serializableBlock.place();
+                        it.remove();
+                    }
                 }
-            }
+            }, 20L * iterations);
+            ++iterations;
         }
     }
 }
