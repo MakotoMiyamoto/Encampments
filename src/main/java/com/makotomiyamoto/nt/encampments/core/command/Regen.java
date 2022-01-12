@@ -11,6 +11,7 @@ public class Regen implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         long start = System.currentTimeMillis();
         NTEUtils.restoreBlocks();
+        NTEUtils.decayBlocks();
         long end = System.currentTimeMillis();
         sender.sendMessage(String.format("Blocks regenerated. (%dms)", end - start));
         return true;

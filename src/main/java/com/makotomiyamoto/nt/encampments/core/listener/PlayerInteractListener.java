@@ -17,7 +17,7 @@ public class PlayerInteractListener implements Listener {
         if (Objects.equals(event.getHand(), EquipmentSlot.OFF_HAND) || event.getAction().equals(Action.LEFT_CLICK_BLOCK))
             return;
 
-        if (NTEGlobals.playerIsAdminMode(event.getPlayer()) && event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.IRON_PICKAXE)) {
+        if (NTEGlobals.isPlayerAdminMode(event.getPlayer()) && event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.IRON_PICKAXE)) {
             if (!Objects.requireNonNull(event.getClickedBlock()).getType().equals(Material.AIR)) {
                 NTEGlobals.Admin.setPos2(event.getClickedBlock().getLocation());
                 NTEGlobals.Admin.getPos1().setWorld(NTEGlobals.Admin.getPos2().getWorld());

@@ -2,6 +2,7 @@ package com.makotomiyamoto.nt.encampments.core.block;
 
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.Bisected;
+import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.event.block.BlockEvent;
 
 import java.util.Date;
@@ -12,7 +13,7 @@ public class ChangedBlock {
 
     public ChangedBlock(Date time, BlockEvent blockEvent) {
         this.date = (Date) time.clone();
-        if (blockEvent.getBlock().getBlockData() instanceof Bisected) {
+        if (blockEvent.getBlock().getBlockData() instanceof Bisected && ! (blockEvent.getBlock().getBlockData() instanceof TrapDoor)) {
             this.serializableBlock = new SerializableBisected(blockEvent);
         }
         else if (blockEvent.getBlock().getState() instanceof Sign) {

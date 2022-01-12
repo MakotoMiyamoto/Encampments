@@ -1,10 +1,13 @@
 package com.makotomiyamoto.nt.encampments;
 
+import com.makotomiyamoto.nt.encampments.core.block.ChangedBlock;
 import com.makotomiyamoto.nt.encampments.core.block.NTEChunk;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +16,9 @@ import java.util.List;
 public abstract class NTEGlobals {
     private static final List<Player> adminPlayers = new ArrayList<>();
     private static final HashMap<Chunk, NTEChunk> chunks = new HashMap<>();
+    private static final HashMap<Chunk, NTEChunk> claimChunks = new HashMap<>();
+    private static final HashMap<Chunk, NTEChunk> placedChunks = new HashMap<>();
+    private static final HashMap<Chunk, NTEChunk> recentlyReplacedChunks = new HashMap<>();
 
     public static class Admin {
         private static final HashMap<Location, Boolean> blocksChangedByAdmins = new HashMap<>();
@@ -61,7 +67,38 @@ public abstract class NTEGlobals {
         return chunks;
     }
 
-    public static boolean playerIsAdminMode(Player player) {
+    public static HashMap<Chunk, NTEChunk> getClaimChunks() {
+        return claimChunks;
+    }
+
+    public static HashMap<Chunk, NTEChunk> getPlacedChunks() {
+        return placedChunks;
+    }
+
+    public static HashMap<Chunk, NTEChunk> getRecentlyReplacedChunks() {
+        return recentlyReplacedChunks;
+    }
+
+    public static boolean isPlayerAdminMode(Player player) {
         return getAdminPlayers().contains(player);
+    }
+
+    public static boolean isChunkClaimed(Chunk chunk) {
+        return getClaimChunks().containsKey(chunk);
+    }
+
+    public static boolean isBlockCached(@NotNull Block block) {
+        // redundant if-else for clarity
+        boolean cached = false;
+        if (getChunks().containsKey(block.getChunk()) && getChunks().get(block.getChunk()).getChangedBlocks().containsKey(block.getLocation())) {
+            cached = true;
+        }
+        else if (getClaimChunks().containsKey(block.getChunk()) && getClaimChunks().get(block.getChunk()).getChangedBlocks().containsKey(block.getLocation())) {
+            cached = true;
+        }
+        else if (getPlacedChunks().containsKey(block.getChunk()) && getPlacedChunks().get(block.getChunk()).getChangedBlocks().containsKey(block.getLocation())) {
+            cached = true;
+        }
+        return cached;
     }
 }

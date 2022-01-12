@@ -3,7 +3,6 @@ package com.makotomiyamoto.nt.encampments.core.block;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 // I don't know what to name this class yet.

@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 
 import java.util.Objects;
 
@@ -20,7 +21,7 @@ import java.util.Objects;
 public class SerializableBlock {
     protected final BlockData blockData;
     protected final Location location;
-    protected final Material type;
+    protected Material type;
 
     SerializableBlock(BlockEvent blockEvent) {
         this(blockEvent.getBlock());
