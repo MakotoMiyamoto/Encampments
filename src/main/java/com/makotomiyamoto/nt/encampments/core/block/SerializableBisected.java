@@ -2,8 +2,11 @@ package com.makotomiyamoto.nt.encampments.core.block;
 
 import com.makotomiyamoto.nt.encampments.Encampments;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Bisected;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockEvent;
 
@@ -17,6 +20,10 @@ public class SerializableBisected extends SerializableBlock {
             ((Bisected)getBlockData()).setHalf(Bisected.Half.BOTTOM);
             getLocation().subtract(0, 1, 0);
         }
+    }
+
+    SerializableBisected(BlockData blockData, Location location, Material material) {
+        super(blockData, location, material);
     }
 
     /**

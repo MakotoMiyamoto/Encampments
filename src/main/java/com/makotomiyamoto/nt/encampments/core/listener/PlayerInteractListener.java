@@ -1,7 +1,11 @@
 package com.makotomiyamoto.nt.encampments.core.listener;
 
+import com.google.gson.Gson;
+import com.makotomiyamoto.nt.encampments.Encampments;
 import com.makotomiyamoto.nt.encampments.NTEGlobals;
+import com.makotomiyamoto.nt.encampments.core.block.SerializableBlockFactory;
 import com.makotomiyamoto.nt.encampments.core.desht.Cuboid;
+import com.makotomiyamoto.nt.encampments.util.GsonManager;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,6 +14,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.Objects;
+import java.util.logging.Level;
 
 public class PlayerInteractListener implements Listener {
     @EventHandler
@@ -22,6 +27,10 @@ public class PlayerInteractListener implements Listener {
                 NTEGlobals.Admin.setPos2(event.getClickedBlock().getLocation());
                 NTEGlobals.Admin.getPos1().setWorld(NTEGlobals.Admin.getPos2().getWorld());
                 event.getPlayer().sendMessage(String.format("Pos2 set. (%d)", new Cuboid(NTEGlobals.Admin.getPos1(), NTEGlobals.Admin.getPos2()).getVolume()));
+                Encampments.getInstance().getLogger().log(Level.WARNING, GsonManager.getGson().toJson(event.getClickedBlock().getBlockData()));
+                Encampments.getInstance().getLogger().log(Level.WARNING, GsonManager.getGson().toJson(event.getClickedBlock().getLocation()));
+                String string = GsonManager.getGson().toJson(SerializableBlockFactory.createSerializableBlock(event.getClickedBlock().getBlockData(), event.getClickedBlock().getLocation(), event.getClickedBlock().getType()));
+
             }
         }
     }

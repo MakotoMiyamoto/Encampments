@@ -33,6 +33,12 @@ public class SerializableBlock {
         this.type = block.getType();
     }
 
+    SerializableBlock(BlockData blockData, Location location, Material material) {
+        this.blockData = blockData;
+        this.location = location;
+        this.type = material;
+    }
+
     public BlockData getBlockData() {
         return blockData;
     }

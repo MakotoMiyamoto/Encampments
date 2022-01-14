@@ -4,8 +4,11 @@ import com.makotomiyamoto.nt.encampments.Encampments;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.event.block.BlockEvent;
 
 import java.util.ArrayList;
@@ -19,6 +22,10 @@ public class SerializableSign extends SerializableBlock {
     SerializableSign(BlockEvent blockEvent) {
         super(blockEvent);
         lines.addAll(((Sign)blockEvent.getBlock().getState()).lines());
+    }
+
+    SerializableSign(BlockData blockData, Location location, Material material) {
+        super(blockData, location, material);
     }
 
     public List<Component> getLines() {
