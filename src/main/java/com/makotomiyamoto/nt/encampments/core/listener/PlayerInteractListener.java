@@ -27,10 +27,11 @@ public class PlayerInteractListener implements Listener {
                 NTEGlobals.Admin.setPos2(event.getClickedBlock().getLocation());
                 NTEGlobals.Admin.getPos1().setWorld(NTEGlobals.Admin.getPos2().getWorld());
                 event.getPlayer().sendMessage(String.format("Pos2 set. (%d)", new Cuboid(NTEGlobals.Admin.getPos1(), NTEGlobals.Admin.getPos2()).getVolume()));
-                Encampments.getInstance().getLogger().log(Level.WARNING, GsonManager.getGson().toJson(event.getClickedBlock().getBlockData()));
-                Encampments.getInstance().getLogger().log(Level.WARNING, GsonManager.getGson().toJson(event.getClickedBlock().getLocation()));
-                String string = GsonManager.getGson().toJson(SerializableBlockFactory.createSerializableBlock(event.getClickedBlock().getBlockData(), event.getClickedBlock().getLocation(), event.getClickedBlock().getType()));
-
+                //Encampments.getInstance().getLogger().log(Level.WARNING, GsonManager.getGson().toJson(event.getClickedBlock().getBlockData()));
+                //Encampments.getInstance().getLogger().log(Level.WARNING, GsonManager.getGson().toJson(event.getClickedBlock().getLocation()));
+                Encampments.getInstance().getLogger().log(Level.WARNING, GsonManager.getGson().toJson(event.getClickedBlock().getLocation().getChunk()));
+                //String string = GsonManager.getGson().toJson(SerializableBlockFactory.createSerializableBlock(event.getClickedBlock().getBlockData(), event.getClickedBlock().getLocation(), event.getClickedBlock().getType()));
+                //Encampments.getInstance().getLogger().log(Level.WARNING, string);
             }
         }
     }

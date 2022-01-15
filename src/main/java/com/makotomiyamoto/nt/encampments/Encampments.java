@@ -31,8 +31,8 @@ public final class Encampments extends JavaPlugin {
 
         GsonManager.registerSerializationHierarchyAdapter(new SerializableBlockSerializationAdapter());
         GsonManager.registerSerializationHierarchyAdapter(new BlockDataSerializationAdapter());
+        GsonManager.registerSerializationHierarchyAdapter(new ChunkSerializationAdapter());
         GsonManager.registerSerializationAdapter(new LocationSerializationAdapter());
-        GsonManager.registerSerializationAdapter(new ChunkSerializationAdapter());
         GsonManager.reinitializeGson();
 
         instance = this;
