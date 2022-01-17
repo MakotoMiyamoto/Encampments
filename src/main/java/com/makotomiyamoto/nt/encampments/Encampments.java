@@ -1,9 +1,6 @@
 package com.makotomiyamoto.nt.encampments;
 
-import com.makotomiyamoto.nt.encampments.core.adapter.BlockDataSerializationAdapter;
-import com.makotomiyamoto.nt.encampments.core.adapter.ChunkSerializationAdapter;
-import com.makotomiyamoto.nt.encampments.core.adapter.LocationSerializationAdapter;
-import com.makotomiyamoto.nt.encampments.core.adapter.SerializableBlockSerializationAdapter;
+import com.makotomiyamoto.nt.encampments.core.adapter.*;
 import com.makotomiyamoto.nt.encampments.core.command.AdminToggle;
 import com.makotomiyamoto.nt.encampments.core.command.DumpBlockCache;
 import com.makotomiyamoto.nt.encampments.core.command.NaturallyDestroy;
@@ -27,15 +24,18 @@ public final class Encampments extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        instance = this;
+
         this.saveDefaultConfig();
 
         GsonManager.registerSerializationHierarchyAdapter(new SerializableBlockSerializationAdapter());
         GsonManager.registerSerializationHierarchyAdapter(new BlockDataSerializationAdapter());
         GsonManager.registerSerializationHierarchyAdapter(new ChunkSerializationAdapter());
+        GsonManager.registerSerializationAdapter(new NTEChunkSerializationAdapter());
         GsonManager.registerSerializationAdapter(new LocationSerializationAdapter());
+        GsonManager.registerSerializationAdapter(new DateSerializationAdapter());
         GsonManager.reinitializeGson();
 
-        instance = this;
         this.getServer().getPluginManager().registerEvents(new BlockEventListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerInteractListener(), this);
