@@ -8,6 +8,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class PlayerQuitListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        NTEGlobals.getAdminPlayers().removeIf(offlinePlayer -> event.getPlayer().getUniqueId().equals(offlinePlayer.getUniqueId()));
+        NTEGlobals.removePlayerAdminMode(event.getPlayer());
     }
 }

@@ -1,5 +1,6 @@
 package com.makotomiyamoto.nt.encampments;
 
+import com.makotomiyamoto.nt.encampments.core.block.BlockStateCache;
 import com.makotomiyamoto.nt.encampments.core.block.ChangedBlock;
 import com.makotomiyamoto.nt.encampments.core.block.NTEChunk;
 import org.bukkit.Bukkit;
@@ -9,16 +10,42 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public abstract class NTEGlobals {
-    private static final List<Player> adminPlayers = new ArrayList<>();
-    private static final HashMap<Chunk, NTEChunk> chunks = new HashMap<>();
-    private static final HashMap<Chunk, NTEChunk> claimChunks = new HashMap<>();
-    private static final HashMap<Chunk, NTEChunk> placedChunks = new HashMap<>();
-    private static final HashMap<Chunk, NTEChunk> recentlyReplacedChunks = new HashMap<>();
+//    private static final HashMap<Chunk, NTEChunk> chunks = new HashMap<>(); // refactor to brokenBlockCache
+//    private static final HashMap<Chunk, NTEChunk> claimChunks = new HashMap<>(); // refactor to hash set
+//    private static final HashMap<Chunk, NTEChunk> placedChunks = new HashMap<>(); // refactor to placedBlocksCache
+    private static final HashMap<Chunk, NTEChunk> recentlyReplacedChunks = new HashMap<>(); // do not refactor, this is simply a state mechanism
+
+    private static final HashSet<Chunk> claimedChunks = new HashSet<>();
+    private static final HashSet<Player> playersInAdminMode = new HashSet<>();
+    private static final BlockStateCache brokenBlocksCache = new BlockStateCache();
+    private static final BlockStateCache placedBlocksCache = new BlockStateCache();
+
+    public static HashSet<Chunk> getClaimedChunks() {
+        return claimedChunks;
+    }
+
+    public static HashSet<Player> getPlayersInAdminMode() {
+        return playersInAdminMode;
+    }
+
+    public static void setPlayerAdminMode(Player player) {
+        getPlayersInAdminMode().add(player);
+    }
+
+    public static void removePlayerAdminMode(Player player) {
+        getPlayersInAdminMode().remove(player);
+    }
+
+    public static BlockStateCache getBrokenBlocksCache() {
+        return brokenBlocksCache;
+    }
+
+    public static BlockStateCache getPlacedBlocksCache() {
+        return placedBlocksCache;
+    }
 
     public static class Admin {
         private static final HashMap<Location, Boolean> blocksChangedByAdmins = new HashMap<>();
@@ -59,46 +86,45 @@ public abstract class NTEGlobals {
         public static long REGEN_TIME_SECONDS = 3L;
     }
 
-    public static List<Player> getAdminPlayers() {
-        return adminPlayers;
-    }
-
-    public static HashMap<Chunk, NTEChunk> getChunks() {
-        return chunks;
-    }
-
-    public static HashMap<Chunk, NTEChunk> getClaimChunks() {
-        return claimChunks;
-    }
-
-    public static HashMap<Chunk, NTEChunk> getPlacedChunks() {
-        return placedChunks;
-    }
-
     public static HashMap<Chunk, NTEChunk> getRecentlyReplacedChunks() {
         return recentlyReplacedChunks;
     }
 
-    public static boolean isPlayerAdminMode(Player player) {
-        return getAdminPlayers().contains(player);
+    public static boolean isPlayerInAdminMode(Player player) {
+        return getPlayersInAdminMode().contains(player);
     }
 
-    public static boolean isChunkClaimed(Chunk chunk) {
-        return getClaimChunks().containsKey(chunk);
+    /**
+     * Checks if a chunk is claimed (or padding a claim) so that it is
+     * ignored in block events.
+     * @param chunk A chunk object representing a Minecraft chunk
+     * @return true if the chunk is padding a claim(s)
+     */
+    public static boolean isChunkClaimed(@NotNull Chunk chunk) {
+        return getClaimedChunks().contains(chunk);
     }
 
+    /**
+     * Checks if a block is cached in any state. This method was written to
+     * avoid cache overriding (e.g., if you place a block and destroy it, the
+     * algorithm will only remember the initial placement and not the destruction
+     * thereof).
+     * @param block an object representing a block in Minecraft
+     * @return true if the block is cached
+     */
     public static boolean isBlockCached(@NotNull Block block) {
         // redundant if-else for clarity
         boolean cached = false;
-        if (getChunks().containsKey(block.getChunk()) && getChunks().get(block.getChunk()).getChangedBlocks().containsKey(block.getLocation())) {
+
+        var chunk = getBrokenBlocksCache().getCache().get(block.getChunk());
+        if (chunk != null && chunk.getChangedBlocks().containsKey(block.getLocation())) {
             cached = true;
         }
-        else if (getClaimChunks().containsKey(block.getChunk()) && getClaimChunks().get(block.getChunk()).getChangedBlocks().containsKey(block.getLocation())) {
+        chunk = getPlacedBlocksCache().getCache().get(block.getChunk());
+        if (chunk != null && chunk.getChangedBlocks().containsKey(block.getLocation())) {
             cached = true;
         }
-        else if (getPlacedChunks().containsKey(block.getChunk()) && getPlacedChunks().get(block.getChunk()).getChangedBlocks().containsKey(block.getLocation())) {
-            cached = true;
-        }
+
         return cached;
     }
 }

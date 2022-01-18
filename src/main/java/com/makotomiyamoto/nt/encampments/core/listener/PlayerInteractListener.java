@@ -1,9 +1,7 @@
 package com.makotomiyamoto.nt.encampments.core.listener;
 
-import com.google.gson.Gson;
 import com.makotomiyamoto.nt.encampments.Encampments;
 import com.makotomiyamoto.nt.encampments.NTEGlobals;
-import com.makotomiyamoto.nt.encampments.core.block.SerializableBlockFactory;
 import com.makotomiyamoto.nt.encampments.core.desht.Cuboid;
 import com.makotomiyamoto.nt.encampments.util.GsonManager;
 import org.bukkit.Material;
@@ -22,7 +20,7 @@ public class PlayerInteractListener implements Listener {
         if (Objects.equals(event.getHand(), EquipmentSlot.OFF_HAND) || event.getAction().equals(Action.LEFT_CLICK_BLOCK))
             return;
 
-        if (NTEGlobals.isPlayerAdminMode(event.getPlayer()) && event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.IRON_PICKAXE)) {
+        if (NTEGlobals.isPlayerInAdminMode(event.getPlayer()) && event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.IRON_PICKAXE)) {
             if (!Objects.requireNonNull(event.getClickedBlock()).getType().equals(Material.AIR)) {
                 NTEGlobals.Admin.setPos2(event.getClickedBlock().getLocation());
                 NTEGlobals.Admin.getPos1().setWorld(NTEGlobals.Admin.getPos2().getWorld());

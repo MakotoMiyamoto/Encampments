@@ -17,7 +17,7 @@ public class DumpBlockCache implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         Encampments.getInstance().getLogger().log(Level.INFO, "Dumping NTE cache...");
 
-        Encampments.getInstance().getLogger().log(Level.WARNING, GsonManager.getGson().toJson(NTEGlobals.getChunks()));
+        Encampments.getInstance().getLogger().log(Level.WARNING, GsonManager.getGson().toJson(NTEGlobals.getBrokenBlocksCache()));
 
 //        NTEGlobals.getChunks().forEach((chunk, nteChunk) -> nteChunk.getChangedBlocks().values().forEach(changedBlock -> {
 //            SerializableBlock block = changedBlock.getSerializableBlock();

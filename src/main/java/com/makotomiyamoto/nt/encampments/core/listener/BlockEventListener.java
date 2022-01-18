@@ -26,8 +26,8 @@ public class BlockEventListener implements Listener {
             return;
         }
 
-        if (NTEGlobals.getAdminPlayers().contains(event.getPlayer())) {
-            if (NTEGlobals.isPlayerAdminMode(event.getPlayer()) && event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.IRON_PICKAXE)) {
+        if (NTEGlobals.isPlayerInAdminMode(event.getPlayer())) {
+            if (event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.IRON_PICKAXE)) {
                 if (!Objects.requireNonNull(event.getBlock()).getType().equals(Material.AIR)) {
                     NTEGlobals.Admin.setPos1(event.getBlock().getLocation());
                     NTEGlobals.Admin.getPos2().setWorld(NTEGlobals.Admin.getPos1().getWorld());
@@ -57,8 +57,8 @@ public class BlockEventListener implements Listener {
             if (nteChunk.getChangedBlocks().containsKey(event.getBlock().getLocation())) {
                 event.setCancelled(true);
                 var baseBlockLocation = event.getBlock().getLocation().clone().subtract(0, 1, 0);
-                if (NTEGlobals.getChunks().get(event.getBlock().getChunk()).getChangedBlocks().containsKey(baseBlockLocation)) {
-                    var baseChangedBlock = NTEGlobals.getChunks().get(event.getBlock().getChunk()).getChangedBlocks().get(baseBlockLocation);
+                if (NTEGlobals.getBrokenBlocksCache().getCache().get(event.getBlock().getChunk()).getChangedBlocks().containsKey(baseBlockLocation)) {
+                    var baseChangedBlock = NTEGlobals.getBrokenBlocksCache().getCache().get(event.getBlock().getChunk()).getChangedBlocks().get(baseBlockLocation);
                     baseChangedBlock.getSerializableBlock().place();
                 }
             }
@@ -83,7 +83,7 @@ public class BlockEventListener implements Listener {
 
     @EventHandler (priority = EventPriority.HIGHEST)
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (event.isCancelled() || NTEGlobals.isBlockCached(event.getBlockPlaced()) || NTEGlobals.isPlayerAdminMode(event.getPlayer())) {
+        if (event.isCancelled() || NTEGlobals.isBlockCached(event.getBlockPlaced()) || NTEGlobals.isPlayerInAdminMode(event.getPlayer())) {
             return;
         }
 

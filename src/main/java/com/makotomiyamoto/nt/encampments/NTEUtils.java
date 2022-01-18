@@ -14,22 +14,24 @@ import java.util.logging.Level;
 public abstract class NTEUtils {
     public static void setBlockToRestoreCache(BlockEvent blockEvent) {
         Block block = blockEvent.getBlock();
-        if (!NTEGlobals.getChunks().containsKey(block.getChunk())) {
+        if (!NTEGlobals.getBrokenBlocksCache().getCache().containsKey(block.getChunk())) {
             Encampments.getInstance().getLogger().log(Level.INFO, "Chunk " + block.getChunk().getX() + ", " + block.getChunk().getZ() + " not in cache. Adding...");
-            NTEGlobals.getChunks().put(block.getChunk(), new NTEChunk(block.getChunk()));
+            //NTEGlobals.getChunks().put(block.getChunk(), new NTEChunk(block.getChunk()));
+            NTEGlobals.getBrokenBlocksCache().getCache().put(block.getChunk(), new NTEChunk(block.getChunk()));
         }
-        NTEChunk chunk = NTEGlobals.getChunks().get(block.getChunk());
+        //NTEChunk chunk = NTEGlobals.getChunks().get(block.getChunk());
+        NTEChunk chunk = NTEGlobals.getBrokenBlocksCache().getCache().get(block.getChunk());
         var changedBlock = new ChangedBlock(new Date(), blockEvent);
         chunk.getChangedBlocks().put(changedBlock.getSerializableBlock().getLocation(), changedBlock);
     }
 
     public static void setBlockToPlacedCache(BlockPlaceEvent blockPlaceEvent) {
         Block block = blockPlaceEvent.getBlockPlaced();
-        if (!NTEGlobals.getPlacedChunks().containsKey(block.getChunk())) {
+        if (!NTEGlobals.getPlacedBlocksCache().getCache().containsKey(block.getChunk())) {
             Encampments.getInstance().getLogger().log(Level.INFO, "Chunk " + block.getChunk().getX() + ", " + block.getChunk().getZ() + " not in placed cache. Adding...");
-            NTEGlobals.getPlacedChunks().put(block.getChunk(), new NTEChunk(block.getChunk()));
+            NTEGlobals.getPlacedBlocksCache().getCache().put(block.getChunk(), new NTEChunk(block.getChunk()));
         }
-        NTEChunk chunk = NTEGlobals.getPlacedChunks().get(block.getChunk());
+        NTEChunk chunk = NTEGlobals.getPlacedBlocksCache().getCache().get(block.getChunk());
         var changedBlock = new ChangedBlock(new Date(), blockPlaceEvent);
         chunk.getChangedBlocks().put(changedBlock.getSerializableBlock().getLocation(), changedBlock);
     }
@@ -37,7 +39,7 @@ public abstract class NTEUtils {
     public static void restoreBlocks() {
         int iterations = 1;
         long duration = NTEGlobals.Options.REGEN_TIME_SECONDS * 1000;
-        for (var set : NTEGlobals.getChunks().entrySet()) {
+        for (var set : NTEGlobals.getBrokenBlocksCache().getCache().entrySet()) {
             NTEGlobals.getRecentlyReplacedChunks().put(set.getKey(), new NTEChunk(set.getKey()));
             var replaceChunk = NTEGlobals.getRecentlyReplacedChunks().get(set.getKey());
             int finalIterations = iterations;
@@ -64,7 +66,7 @@ public abstract class NTEUtils {
     public static void decayBlocks() {
         int iterations = 1;
         long duration = NTEGlobals.Options.REGEN_TIME_SECONDS * 1000;
-        for (var set : NTEGlobals.getPlacedChunks().entrySet()) {
+        for (var set : NTEGlobals.getPlacedBlocksCache().getCache().entrySet()) {
             Bukkit.getScheduler().runTaskLater(Encampments.getInstance(), () -> {
                 for (var it = set.getValue().getChangedBlocks().values().iterator(); it.hasNext();) {
                     var changedBlock = it.next();
