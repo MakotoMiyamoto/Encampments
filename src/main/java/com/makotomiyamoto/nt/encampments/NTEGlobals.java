@@ -5,6 +5,7 @@ import com.makotomiyamoto.nt.encampments.core.block.ChangedBlock;
 import com.makotomiyamoto.nt.encampments.core.block.NTEChunk;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.ChunkSnapshot;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -20,32 +21,8 @@ public abstract class NTEGlobals {
 
     private static final HashSet<Chunk> claimedChunks = new HashSet<>();
     private static final HashSet<Player> playersInAdminMode = new HashSet<>();
-    private static final BlockStateCache brokenBlocksCache = new BlockStateCache();
-    private static final BlockStateCache placedBlocksCache = new BlockStateCache();
-
-    public static HashSet<Chunk> getClaimedChunks() {
-        return claimedChunks;
-    }
-
-    public static HashSet<Player> getPlayersInAdminMode() {
-        return playersInAdminMode;
-    }
-
-    public static void setPlayerAdminMode(Player player) {
-        getPlayersInAdminMode().add(player);
-    }
-
-    public static void removePlayerAdminMode(Player player) {
-        getPlayersInAdminMode().remove(player);
-    }
-
-    public static BlockStateCache getBrokenBlocksCache() {
-        return brokenBlocksCache;
-    }
-
-    public static BlockStateCache getPlacedBlocksCache() {
-        return placedBlocksCache;
-    }
+    private static BlockStateCache brokenBlocksCache = new BlockStateCache();
+    private static BlockStateCache placedBlocksCache = new BlockStateCache();
 
     public static class Admin {
         private static final HashMap<Location, Boolean> blocksChangedByAdmins = new HashMap<>();
@@ -84,6 +61,38 @@ public abstract class NTEGlobals {
     public static class Options {
         public static boolean AUTO_REGEN = true;
         public static long REGEN_TIME_SECONDS = 3L;
+    }
+
+    public static HashSet<Chunk> getClaimedChunks() {
+        return claimedChunks;
+    }
+
+    public static HashSet<Player> getPlayersInAdminMode() {
+        return playersInAdminMode;
+    }
+
+    public static void setPlayerAdminMode(Player player) {
+        getPlayersInAdminMode().add(player);
+    }
+
+    public static void removePlayerAdminMode(Player player) {
+        getPlayersInAdminMode().remove(player);
+    }
+
+    public static BlockStateCache getBrokenBlocksCache() {
+        return brokenBlocksCache;
+    }
+
+    public static BlockStateCache getPlacedBlocksCache() {
+        return placedBlocksCache;
+    }
+
+    public static void setBrokenBlocksCache(BlockStateCache cache) {
+        NTEGlobals.brokenBlocksCache = cache;
+    }
+
+    public static void setPlacedBlocksCache(BlockStateCache placedBlocksCache) {
+        NTEGlobals.placedBlocksCache = placedBlocksCache;
     }
 
     public static HashMap<Chunk, NTEChunk> getRecentlyReplacedChunks() {

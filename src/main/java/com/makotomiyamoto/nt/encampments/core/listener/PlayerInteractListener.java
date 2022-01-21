@@ -4,12 +4,16 @@ import com.makotomiyamoto.nt.encampments.Encampments;
 import com.makotomiyamoto.nt.encampments.NTEGlobals;
 import com.makotomiyamoto.nt.encampments.core.desht.Cuboid;
 import com.makotomiyamoto.nt.encampments.util.GsonManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Campfire;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.CampfireRecipe;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
 import java.util.logging.Level;
@@ -32,5 +36,14 @@ public class PlayerInteractListener implements Listener {
                 //Encampments.getInstance().getLogger().log(Level.WARNING, string);
             }
         }
+
+        if (event.getClickedBlock() == null) return;
+
+//        if (event.getClickedBlock().getState() instanceof Campfire campfire) {
+//            Encampments.getInstance().getLogger().log(Level.WARNING, "Block is campfire.");
+//            ItemStack heldItem = event.getPlayer().getInventory().getItemInMainHand();
+//            campfire.setItem(0, heldItem);
+//            campfire.update();
+//        }
     }
 }
