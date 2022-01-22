@@ -4,10 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -23,14 +23,21 @@ public class SerializableBlock {
     protected final Location location;
     protected Material type;
 
-    SerializableBlock(BlockEvent blockEvent) {
-        this(blockEvent.getBlock());
-    }
+//    @Deprecated
+//    SerializableBlock(BlockEvent blockEvent) {
+//        this(blockEvent.getBlock());
+//    }
 
-    private SerializableBlock(Block block) {
-        this.blockData = block.getBlockData().clone();
-        this.location = block.getLocation().clone();
-        this.type = block.getType();
+//    private SerializableBlock(Block block) {
+//        this.blockData = block.getBlockData().clone();
+//        this.location = block.getLocation().clone();
+//        this.type = block.getType();
+//    }
+
+    SerializableBlock(BlockState blockState, @NotNull BlockEvent blockEvent) {
+        this.blockData = blockState.getBlockData().clone();
+        this.location = blockState.getLocation().clone();
+        this.type = blockState.getType();
     }
 
     SerializableBlock(BlockData blockData, Location location, Material material) {

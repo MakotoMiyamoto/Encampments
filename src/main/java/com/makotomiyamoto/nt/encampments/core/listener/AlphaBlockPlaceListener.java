@@ -40,6 +40,7 @@ public class AlphaBlockPlaceListener implements Listener {
     public void onFlintBonkCampfire(PlayerInteractEvent event) {
         if (event.getClickedBlock() == null || Objects.equals(event.getHand(), EquipmentSlot.OFF_HAND)) return;
         PlayerInventory inventory = event.getPlayer().getInventory();
+        // TODO performance note, check the block material instead of checking for an instance
         if (event.getClickedBlock().getBlockData() instanceof Campfire campfire && inventory.getItemInMainHand().getType().equals(Material.FLINT)) {
             if (new Random().nextBoolean()) {
                 event.getPlayer().playSound(event.getClickedBlock().getLocation(), Sound.ITEM_FIRECHARGE_USE, 2, 1.8f);

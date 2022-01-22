@@ -94,7 +94,11 @@ public class BlockEventListener implements Listener {
         }
         else {
             // handle unclaimed blocks
-            NTEUtils.setBlockToPlacedCache(event);
+            if (!event.getBlockReplacedState().getType().equals(Material.AIR)) {
+                NTEUtils.setBlockToRestoreCache(event);
+            } else {
+                NTEUtils.setBlockToPlacedCache(event);
+            }
         }
     }
 }

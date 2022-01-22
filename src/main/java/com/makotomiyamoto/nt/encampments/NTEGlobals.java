@@ -14,9 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public abstract class NTEGlobals {
-//    private static final HashMap<Chunk, NTEChunk> chunks = new HashMap<>(); // refactor to brokenBlockCache
-//    private static final HashMap<Chunk, NTEChunk> claimChunks = new HashMap<>(); // refactor to hash set
-//    private static final HashMap<Chunk, NTEChunk> placedChunks = new HashMap<>(); // refactor to placedBlocksCache
     private static final HashMap<Chunk, NTEChunk> recentlyReplacedChunks = new HashMap<>(); // do not refactor, this is simply a state mechanism
 
     private static final HashSet<Chunk> claimedChunks = new HashSet<>();
@@ -63,6 +60,11 @@ public abstract class NTEGlobals {
         public static long REGEN_TIME_SECONDS = 3L;
     }
 
+    public static class Paths {
+        public static final String BROKEN_BLOCKS_CACHE = "cache/broken_blocks.json";
+        public static final String PLACED_BLOCKS_CACHE = "cache/placed_blocks.json";
+    }
+
     public static HashSet<Chunk> getClaimedChunks() {
         return claimedChunks;
     }
@@ -87,10 +89,20 @@ public abstract class NTEGlobals {
         return placedBlocksCache;
     }
 
-    public static void setBrokenBlocksCache(BlockStateCache cache) {
-        NTEGlobals.brokenBlocksCache = cache;
+    /**
+     * Sets the broken blocks cache.
+     * <p>WARNING: This is an unsafe method and is only meant for internal use.</p>
+     * @param blockStateCache the cache
+     */
+    public static void setBrokenBlocksCache(BlockStateCache blockStateCache) {
+        NTEGlobals.brokenBlocksCache = blockStateCache;
     }
 
+    /**
+     * Sets the placed blocks cache.
+     * <p>WARNING: This is an unsafe method and is only meant for internal use.</p>
+     * @param placedBlocksCache the cache
+     */
     public static void setPlacedBlocksCache(BlockStateCache placedBlocksCache) {
         NTEGlobals.placedBlocksCache = placedBlocksCache;
     }

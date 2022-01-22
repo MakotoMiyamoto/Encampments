@@ -2,9 +2,14 @@ package com.makotomiyamoto.nt.encampments;
 
 import com.makotomiyamoto.nt.encampments.core.block.ChangedBlock;
 import com.makotomiyamoto.nt.encampments.core.block.NTEChunk;
+import com.makotomiyamoto.nt.encampments.core.block.SerializableBlockFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Sign;
+import org.bukkit.block.data.Bisected;
+import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.event.block.BlockEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
@@ -16,12 +21,15 @@ public abstract class NTEUtils {
         Block block = blockEvent.getBlock();
         if (!NTEGlobals.getBrokenBlocksCache().getCache().containsKey(block.getChunk())) {
             Encampments.getInstance().getLogger().log(Level.INFO, "Chunk " + block.getChunk().getX() + ", " + block.getChunk().getZ() + " not in cache. Adding...");
-            //NTEGlobals.getChunks().put(block.getChunk(), new NTEChunk(block.getChunk()));
             NTEGlobals.getBrokenBlocksCache().getCache().put(block.getChunk(), new NTEChunk(block.getChunk()));
         }
-        //NTEChunk chunk = NTEGlobals.getChunks().get(block.getChunk());
         NTEChunk chunk = NTEGlobals.getBrokenBlocksCache().getCache().get(block.getChunk());
-        var changedBlock = new ChangedBlock(new Date(), blockEvent);
+        ChangedBlock changedBlock;
+        if (blockEvent instanceof BlockPlaceEvent blockPlaceEvent) {
+            changedBlock = new ChangedBlock(new Date(), blockPlaceEvent.getBlockReplacedState(), blockPlaceEvent);
+        } else {
+            changedBlock = new ChangedBlock(new Date(), blockEvent.getBlock().getState(), blockEvent);
+        }
         chunk.getChangedBlocks().put(changedBlock.getSerializableBlock().getLocation(), changedBlock);
     }
 
@@ -32,7 +40,7 @@ public abstract class NTEUtils {
             NTEGlobals.getPlacedBlocksCache().getCache().put(block.getChunk(), new NTEChunk(block.getChunk()));
         }
         NTEChunk chunk = NTEGlobals.getPlacedBlocksCache().getCache().get(block.getChunk());
-        var changedBlock = new ChangedBlock(new Date(), blockPlaceEvent);
+        var changedBlock = new ChangedBlock(new Date(), blockPlaceEvent.getBlock().getState(), blockPlaceEvent);
         chunk.getChangedBlocks().put(changedBlock.getSerializableBlock().getLocation(), changedBlock);
     }
 

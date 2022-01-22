@@ -6,10 +6,7 @@ import com.makotomiyamoto.nt.encampments.core.command.AdminToggle;
 import com.makotomiyamoto.nt.encampments.core.command.DumpBlockCache;
 import com.makotomiyamoto.nt.encampments.core.command.NaturallyDestroy;
 import com.makotomiyamoto.nt.encampments.core.command.Regen;
-import com.makotomiyamoto.nt.encampments.core.listener.AlphaBlockPlaceListener;
-import com.makotomiyamoto.nt.encampments.core.listener.BlockEventListener;
-import com.makotomiyamoto.nt.encampments.core.listener.PlayerInteractListener;
-import com.makotomiyamoto.nt.encampments.core.listener.PlayerQuitListener;
+import com.makotomiyamoto.nt.encampments.core.listener.*;
 import com.makotomiyamoto.nt.encampments.util.GsonManager;
 import com.makotomiyamoto.nt.encampments.util.NTFileUtils;
 import org.bukkit.Bukkit;
@@ -50,16 +47,17 @@ public final class Encampments extends JavaPlugin {
         GsonManager.registerSerializationAdapter(new DateSerializationAdapter());
         GsonManager.reinitializeGson();
 
-        if (this.getDataFolder().toPath().resolve("cache").toFile().exists()) {
+        if (NTFileUtils.cacheFolderExists(this)) {
             try {
-                String json = NTFileUtils.readFromFile("cache/broken_blocks.json");
-                System.out.println(json);
-                NTEGlobals.setBrokenBlocksCache(GsonManager.getGson().fromJson(json, BlockStateCache.class));
+                // rhs makes this difficult to read
+                NTEGlobals.setBrokenBlocksCache(GsonManager.getGson().fromJson(NTFileUtils.readFromFile(this, NTEGlobals.Paths.BROKEN_BLOCKS_CACHE), BlockStateCache.class));
+                NTEGlobals.setPlacedBlocksCache(GsonManager.getGson().fromJson(NTFileUtils.readFromFile(this, NTEGlobals.Paths.PLACED_BLOCKS_CACHE), BlockStateCache.class));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
+        this.getServer().getPluginManager().registerEvents(new WorldSaveListener(), this);
         this.getServer().getPluginManager().registerEvents(new BlockEventListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerInteractListener(), this);
@@ -98,16 +96,16 @@ public final class Encampments extends JavaPlugin {
         campfireAltRecipe.shape("SS", "SS").setIngredient('S', Material.STICK);
         Bukkit.addRecipe(campfireAltRecipe);
         this.getServer().getPluginManager().registerEvents(new AlphaBlockPlaceListener(), this);
+
+        NamespacedKey cobblestoneAltKey = new NamespacedKey(this, "cobblestone_alt");
+        ShapedRecipe cobblestoneAltRecipe = new ShapedRecipe(cobblestoneAltKey, new ItemStack(Material.COBBLESTONE));
+        cobblestoneAltRecipe.shape("FF", "FF").setIngredient('F', Material.FLINT);
+        Bukkit.addRecipe(cobblestoneAltRecipe);
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        try {
-            NTFileUtils.saveJson(NTEGlobals.getBrokenBlocksCache(), "cache/broken_blocks.json");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public static Encampments getInstance() {
