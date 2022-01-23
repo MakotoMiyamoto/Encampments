@@ -20,14 +20,10 @@ import java.util.logging.Level;
 public class SerializableSign extends SerializableBlock {
     private final List<Component> lines = new ArrayList<>();
 
-//    @Deprecated
-//    SerializableSign(BlockEvent blockEvent) {
-//        super(blockEvent);
-//        lines.addAll(((Sign)blockEvent.getBlock().getState()).lines());
-//    }
-
     SerializableSign(BlockState blockState, BlockEvent blockEvent) {
         super(blockState, blockEvent);
+        Sign sign = (Sign) blockState;
+        lines.addAll(sign.lines());
     }
 
     SerializableSign(BlockData blockData, Location location, Material material) {
@@ -45,10 +41,10 @@ public class SerializableSign extends SerializableBlock {
         block.setBlockData(blockData);
         Sign sign = (Sign) block.getState();
 
-        for (int i = 0; i < lines.size(); ++i) {
-            Encampments.getInstance().getLogger().log(Level.WARNING, PlainTextComponentSerializer.plainText().serialize(lines.get(i)));
-//            ((Sign)block.getState()).lines().set(i, lines.get(i));
-            sign.lines().get(i).append(lines.get(i));
+        for (int i = 0; i < this.lines.size(); ++i) {
+            Encampments.getInstance().getLogger().log(Level.WARNING, this.lines.get(i).toString());
+            sign.line(i, this.lines.get(i));
         }
+        sign.update();
     }
 }

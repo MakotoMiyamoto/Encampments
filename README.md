@@ -1,2 +1,2 @@
 # Encampments
-Camping and crafting system for the Misteria RPG server
+Camping and crafting system for the Nebula Toxin SMP RPG server

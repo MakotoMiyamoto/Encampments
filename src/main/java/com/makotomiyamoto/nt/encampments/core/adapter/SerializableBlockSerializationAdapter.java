@@ -6,11 +6,14 @@ import com.makotomiyamoto.nt.encampments.core.block.SerializableBlock;
 import com.makotomiyamoto.nt.encampments.core.block.SerializableBlockFactory;
 import com.makotomiyamoto.nt.encampments.core.block.SerializableSign;
 import com.makotomiyamoto.nt.encampments.util.JsonSerializationAdapter;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 public class SerializableBlockSerializationAdapter extends JsonSerializationAdapter<SerializableBlock> {
     static final String TYPE_BISECTED = "BISECTED";
@@ -27,8 +30,14 @@ public class SerializableBlockSerializationAdapter extends JsonSerializationAdap
         if (src instanceof SerializableBisected) {
             blockJsonObject.addProperty("type", TYPE_BISECTED);
         }
-        else if (src instanceof SerializableSign) {
+        else if (src instanceof SerializableSign sign) {
             blockJsonObject.addProperty("type", TYPE_SIGN);
+            JsonArray lines = new JsonArray();
+            for (Component component : sign.getLines()) {
+                lines.add(GsonComponentSerializer.gson().serialize(component));
+            }
+            blockJsonObject.add("lines", lines);
+
         }
         else {
             blockJsonObject.addProperty("type", TYPE_NORMAL);
@@ -49,7 +58,14 @@ public class SerializableBlockSerializationAdapter extends JsonSerializationAdap
         SerializableBlock block;
         switch (dataType) {
             case TYPE_BISECTED -> block = SerializableBlockFactory.createSerializableBisected(blockData, location, type);
-            case TYPE_SIGN -> block = SerializableBlockFactory.createSerializableSign(blockData, location, type);
+            case TYPE_SIGN -> {
+                block = SerializableBlockFactory.createSerializableSign(blockData, location, type);
+                SerializableSign sign = (SerializableSign) block;
+                JsonArray lines = jsonObject.getAsJsonArray("lines");
+                for (var line : lines) {
+                    sign.getLines().add(GsonComponentSerializer.gson().deserialize(line.getAsString()));
+                }
+            }
             default -> block = SerializableBlockFactory.createSerializableBlock(blockData, location, type);
         }
 

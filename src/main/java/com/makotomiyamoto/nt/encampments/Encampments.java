@@ -106,6 +106,12 @@ public final class Encampments extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        try {
+            NTFileUtils.saveJson(NTEGlobals.getBrokenBlocksCache(), Encampments.getInstance(), NTEGlobals.Paths.BROKEN_BLOCKS_CACHE);
+            NTFileUtils.saveJson(NTEGlobals.getPlacedBlocksCache(), Encampments.getInstance(), NTEGlobals.Paths.PLACED_BLOCKS_CACHE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static Encampments getInstance() {
