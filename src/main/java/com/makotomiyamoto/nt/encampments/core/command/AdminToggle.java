@@ -1,20 +1,11 @@
 package com.makotomiyamoto.nt.encampments.core.command;
 
 import com.makotomiyamoto.nt.encampments.NTEGlobals;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentBuilder;
-import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.event.HoverEventSource;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.util.RGBLike;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
 import org.jetbrains.annotations.NotNull;
 
 public class AdminToggle implements CommandExecutor {

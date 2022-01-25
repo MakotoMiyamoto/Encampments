@@ -4,7 +4,7 @@ main: com.makotomiyamoto.nt.encampments.Encampments
 api-version: 1.18
 prefix: NTE
 authors: [ MakotoMiyamoto ]
-description: Camping and crafting system for the Misteria RPG server.
+description: Camping and crafting system for the Nebula Toxin SMP RPG server.
 website: https://makotomiyamoto.com
 commands:
   dump:

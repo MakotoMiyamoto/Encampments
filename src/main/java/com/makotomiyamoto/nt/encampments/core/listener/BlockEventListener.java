@@ -6,6 +6,7 @@ import com.makotomiyamoto.nt.encampments.NTEGlobals;
 import com.makotomiyamoto.nt.encampments.NTEUtils;
 import com.makotomiyamoto.nt.encampments.core.desht.Cuboid;
 import com.makotomiyamoto.nt.encampments.core.event.BlockBreakByNDEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -13,8 +14,8 @@ import org.bukkit.block.data.Bisected;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.*;
+import org.bukkit.event.entity.EntityExplodeEvent;
 
 import java.util.Objects;
 import java.util.logging.Level;
@@ -100,5 +101,32 @@ public class BlockEventListener implements Listener {
                 NTEUtils.setBlockToPlacedCache(event);
             }
         }
+    }
+
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void onLeavesDecay(LeavesDecayEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
+        NTEUtils.setBlockToRestoreCache(event);
+    }
+
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void onBlockExplode(BlockExplodeEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
+        event.blockList().forEach(block -> Encampments.getInstance().getServer().getPluginManager().callEvent(new BlockBreakByNDEvent(block)));
+    }
+
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void onEntityExplode(EntityExplodeEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
+        event.blockList().forEach(block -> Encampments.getInstance().getServer().getPluginManager().callEvent(new BlockBreakByNDEvent(block)));
     }
 }

@@ -12,7 +12,6 @@ import com.makotomiyamoto.nt.encampments.util.NTFileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.CampfireRecipe;
 import org.bukkit.inventory.ItemStack;
@@ -20,7 +19,6 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.logging.Level;
