@@ -16,6 +16,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 
 import java.util.Objects;
 import java.util.logging.Level;
@@ -128,5 +129,20 @@ public class BlockEventListener implements Listener {
         }
 
         event.blockList().forEach(block -> Encampments.getInstance().getServer().getPluginManager().callEvent(new BlockBreakByNDEvent(block)));
+    }
+
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void onBlockFromTo(BlockFromToEvent event) {
+
+    }
+
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void onBlockBurn(BlockBurnEvent event) {
+
+    }
+
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void onBucketEmpty(PlayerBucketEmptyEvent event) {
+
     }
 }
